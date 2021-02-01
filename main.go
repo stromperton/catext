@@ -24,7 +24,7 @@ var vkToken = ""
 var (
 	RBtnCreatePosts = tb.ReplyButton{Text: "Заготовить посты"}
 
-	IBtnCreate   = tb.InlineButton{Text: "✔️ Готово", Unique: "ok"}
+	IBtnCreate   = tb.InlineButton{Text: "✔️ Опубликовать", Unique: "ok"}
 	IBtnEditText = tb.InlineButton{Text: "✏️ Редактировать текст", Unique: "editText"}
 	IBtnReText   = tb.InlineButton{Text: "🔄 Обновить текст", Unique: "reText"}
 	IBtnReCat    = tb.InlineButton{Text: "🔄 Обновить кота", Unique: "reCat"}
@@ -98,7 +98,7 @@ func main() {
 		text := getText()
 		_, err := b.Edit(c.Message, &tb.Photo{
 			File:    tb.FromDisk("cat.jpg"),
-			Caption: text + fmt.Sprintf("\n<b>Неопубликованный</b>"),
+			Caption: text,
 		}, InlinePost)
 
 		SuperTimer = getLastPostTimeVK()
