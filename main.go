@@ -23,17 +23,6 @@ var vkToken = ""
 
 var (
 	RBtnCreatePosts = tb.ReplyButton{Text: "Заготовить посты"}
-	ReplyMain       = &tb.SendOptions{
-		ParseMode: tb.ModeHTML,
-		ReplyMarkup: &tb.ReplyMarkup{
-			ResizeReplyKeyboard: true,
-			ReplyKeyboard: [][]tb.ReplyButton{
-				{
-					RBtnCreatePosts,
-				},
-			},
-		},
-	}
 
 	IBtnCreate   = tb.InlineButton{Text: "✔️ Готово", Unique: "ok"}
 	IBtnEditText = tb.InlineButton{Text: "✏️ Редактировать текст", Unique: "editText"}
@@ -88,10 +77,6 @@ func main() {
 		if !m.Private() {
 			return
 		}
-		b.Send(m.Sender, "Вот тебе менюшка!", ReplyMain)
-	})
-
-	b.Handle(&RBtnCreatePosts, func(m *tb.Message) {
 		DownloadFile("cat.jpg", "https://thiscatdoesnotexist.com/")
 		text := getText()
 		_, err := b.Send(m.Sender, &tb.Photo{
@@ -102,12 +87,25 @@ func main() {
 		SuperTimer = getLastPostTimeVK()
 		fmt.Println(SuperTimer, err)
 	})
+
 	b.Handle(&IBtnCreate, func(c *tb.Callback) {
+		b.Respond(c)
 		SuperTimer = SuperTimer.Add(time.Hour * 4)
 		fmt.Println(c.Message.Caption)
 		createPostVK("cat.jpg", c.Message.Caption, SuperTimer)
+
+		DownloadFile("cat.jpg", "https://thiscatdoesnotexist.com/")
+		text := getText()
+		_, err := b.Edit(c.Message, &tb.Photo{
+			File:    tb.FromDisk("cat.jpg"),
+			Caption: text + fmt.Sprintf("\n<b>Неопубликованный</b>"),
+		}, InlinePost)
+
+		SuperTimer = getLastPostTimeVK()
+		fmt.Println(SuperTimer, err)
 	})
 	b.Handle(&IBtnReText, func(c *tb.Callback) {
+		b.Respond(c)
 		text := getText()
 		b.Edit(c.Message, &tb.Photo{
 			File:    tb.FromDisk("cat.jpg"),
@@ -115,6 +113,7 @@ func main() {
 		}, InlinePost)
 	})
 	b.Handle(&IBtnReCat, func(c *tb.Callback) {
+		b.Respond(c)
 		DownloadFile("cat.jpg", "https://thiscatdoesnotexist.com/")
 		b.Edit(c.Message, &tb.Photo{
 			File:    tb.FromDisk("cat.jpg"),
@@ -122,6 +121,7 @@ func main() {
 		}, InlinePost)
 	})
 	b.Handle(&IBtnEditText, func(c *tb.Callback) {
+		b.Respond(c)
 		b.Send(c.Sender, "Отправь новый текст")
 		IsBotStateEditText = true
 	})
