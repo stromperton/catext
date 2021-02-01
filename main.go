@@ -19,7 +19,7 @@ import (
 const AdminID int = 303629013
 const vkGroupID = -199800931
 
-var vkToken = "c92688e57f6196743046a96edeb6576e9eb0ea77d9474e815bdebd6e1744ccd492bb7fa4b1f664fa424b6"
+var vkToken = ""
 
 var (
 	RBtnCreatePosts = tb.ReplyButton{Text: "Заготовить посты"}
@@ -54,6 +54,7 @@ func main() {
 		SuperTimer         time.Time
 		IsBotStateEditText = false
 	)
+	vkToken = os.Getenv("TOKEN_VK")
 
 	poller := &tb.Webhook{
 		Listen:   ":" + port,
