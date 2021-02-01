@@ -104,9 +104,8 @@ func main() {
 	})
 	b.Handle(&IBtnCreate, func(c *tb.Callback) {
 		SuperTimer = SuperTimer.Add(time.Hour * 4)
-		fmt.Println(c.Message.Photo.Caption)
-		fmt.Println(c.Message.Text)
-		createPostVK("cat.jpg", c.Message.Photo.Caption, SuperTimer)
+		fmt.Println(c.Message.Caption)
+		createPostVK("cat.jpg", c.Message.Caption, SuperTimer)
 	})
 	b.Handle(&IBtnReText, func(c *tb.Callback) {
 		text := getText()
@@ -119,7 +118,7 @@ func main() {
 		DownloadFile("cat.jpg", "https://thiscatdoesnotexist.com/")
 		b.Edit(c.Message, &tb.Photo{
 			File:    tb.FromDisk("cat.jpg"),
-			Caption: c.Message.Photo.Caption,
+			Caption: c.Message.Caption,
 		}, InlinePost)
 	})
 	b.Handle(&IBtnEditText, func(c *tb.Callback) {
