@@ -19,7 +19,7 @@ import (
 const AdminID int = 303629013
 const vkGroupID = -199800931
 
-var vkToken = "ba521ec4725ecdc3f0a913c285d442f33f295e318c99f7b507cb76854e68c2f25b65eae750d529f66ad63"
+var vkToken = "c92688e57f6196743046a96edeb6576e9eb0ea77d9474e815bdebd6e1744ccd492bb7fa4b1f664fa424b6"
 
 var (
 	RBtnCreatePosts = tb.ReplyButton{Text: "Заготовить посты"}
