@@ -104,6 +104,8 @@ func main() {
 	})
 	b.Handle(&IBtnCreate, func(c *tb.Callback) {
 		SuperTimer = SuperTimer.Add(time.Hour * 4)
+		fmt.Println(c.Message.Photo.Caption)
+		fmt.Println(c.Message.Text)
 		createPostVK("cat.jpg", c.Message.Photo.Caption, SuperTimer)
 	})
 	b.Handle(&IBtnReText, func(c *tb.Callback) {
@@ -139,6 +141,7 @@ func main() {
 
 }
 
+/*
 func CreatePosts() {
 
 	t := time.Date(2021, time.January, 21, 20, 0, 0, 0, time.Local)
@@ -149,7 +152,7 @@ func CreatePosts() {
 	}
 
 }
-
+*/
 func getText() string {
 
 	fileTextUrl := "https://socratify.net/quotes/random"
