@@ -87,12 +87,13 @@ func main() {
 	b.Handle(&RBtnCreatePosts, func(m *tb.Message) {
 		DownloadFile("cat.jpg", "https://thiscatdoesnotexist.com/")
 		text := getText()
-		b.Send(m.Sender, tb.Photo{
+		_, err := b.Send(m.Sender, tb.Photo{
 			File:    tb.FromDisk("cat.jpg"),
 			Caption: text,
 		}, InlinePost)
 
 		SuperTimer = getLastPostTimeVK()
+		fmt.Println(SuperTimer, err)
 	})
 	b.Handle(&IBtnCreate, func(c *tb.Callback) {
 		SuperTimer = SuperTimer.Add(time.Hour * 4)
