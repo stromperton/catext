@@ -16,7 +16,7 @@ import (
 	tb "gopkg.in/tucnak/telebot.v2"
 )
 
-const AdminID = 303629013
+const AdminID int = 303629013
 const vkGroupID = -199800931
 
 var vkToken = "ba521ec4725ecdc3f0a913c285d442f33f295e318c99f7b507cb76854e68c2f25b65eae750d529f66ad63"
@@ -61,8 +61,14 @@ func main() {
 	}
 
 	middle := tb.NewMiddlewarePoller(poller, func(upd *tb.Update) bool {
-		if upd.Message.Sender.ID == AdminID {
-			return true
+		if upd.Message != nil {
+			if upd.Message.Sender.ID == AdminID {
+				return true
+			}
+		} else {
+			if upd.Callback.Sender.ID == AdminID {
+				return true
+			}
 		}
 		return false
 	})
