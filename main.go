@@ -17,6 +17,9 @@ import (
 )
 
 const AdminID = 303629013
+const vkGroupID = -199800931
+
+var vkToken = "ba521ec4725ecdc3f0a913c285d442f33f295e318c99f7b507cb76854e68c2f25b65eae750d529f66ad63"
 
 var (
 	RBtnCreatePosts = tb.ReplyButton{Text: "Заготовить посты"}
@@ -168,12 +171,11 @@ func getText() string {
 }
 
 func getLastPostTimeVK() time.Time {
-	var vkToken = "d46b8dcdb65a9796844341b9b94ccca5e6eb649e5fa7f311d54f42ec1d47b15297201a608876b6fb5ec73"
-	var vkGroupID = -199800931
-
 	client, err := vkapi.NewVKClientWithToken(vkToken, &vkapi.TokenOptions{}, true)
 	if err != nil {
 		fmt.Println(err)
+		updateToken()
+		//return getLastPostTimeVK()
 	}
 
 	params := url.Values{}
@@ -186,19 +188,22 @@ func getLastPostTimeVK() time.Time {
 }
 
 func createPostVK(urlImage string, text string, t time.Time) {
-	var vkToken = "d46b8dcdb65a9796844341b9b94ccca5e6eb649e5fa7f311d54f42ec1d47b15297201a608876b6fb5ec73"
-	var vkGroupID = -199800931
-
 	client, err := vkapi.NewVKClientWithToken(vkToken, &vkapi.TokenOptions{}, true)
 	photo, err := client.UploadGroupWallPhotos(vkGroupID, []string{urlImage})
 	if err != nil {
 		fmt.Println(err)
+		updateToken()
+		//createPostVK(urlImage, text, t)
 	}
 
 	params := url.Values{}
 	params.Set("attachments", client.GetPhotosString(photo))
 	params.Set("publish_date", strconv.FormatInt(t.Unix(), 10))
 	client.WallPost(vkGroupID, text, params)
+}
+
+func updateToken() {
+	fmt.Println("JGGGGG")
 }
 
 /*
