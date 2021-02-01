@@ -87,7 +87,7 @@ func main() {
 	b.Handle(&RBtnCreatePosts, func(m *tb.Message) {
 		DownloadFile("cat.jpg", "https://thiscatdoesnotexist.com/")
 		text := getText()
-		_, err := b.Send(m.Sender, tb.Photo{
+		_, err := b.Send(m.Sender, &tb.Photo{
 			File:    tb.FromDisk("cat.jpg"),
 			Caption: text,
 		}, InlinePost)
@@ -101,14 +101,14 @@ func main() {
 	})
 	b.Handle(&IBtnReText, func(c *tb.Callback) {
 		text := getText()
-		b.Edit(c.Message, tb.Photo{
+		b.Edit(c.Message, &tb.Photo{
 			File:    tb.FromDisk("cat.jpg"),
 			Caption: text,
 		}, InlinePost)
 	})
 	b.Handle(&IBtnReCat, func(c *tb.Callback) {
 		DownloadFile("cat.jpg", "https://thiscatdoesnotexist.com/")
-		b.Edit(c.Message, tb.Photo{
+		b.Edit(c.Message, &tb.Photo{
 			File:    tb.FromDisk("cat.jpg"),
 			Caption: c.Message.Photo.Caption,
 		}, InlinePost)
@@ -121,7 +121,7 @@ func main() {
 	b.Handle(tb.OnText, func(m *tb.Message) {
 		if IsBotStateEditText {
 			IsBotStateEditText = false
-			b.Send(m.Sender, tb.Photo{
+			b.Send(m.Sender, &tb.Photo{
 				File:    tb.FromDisk("cat.jpg"),
 				Caption: m.Text,
 			}, InlinePost)
