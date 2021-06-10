@@ -30,7 +30,7 @@ var (
 	IBtnReText   = tb.InlineButton{Text: "🔄 Обновить текст", Unique: "reText"}
 	IBtnReCat    = tb.InlineButton{Text: "🔄 Обновить кота", Unique: "reCat"}
 	InlinePost   = &tb.ReplyMarkup{
-		InlineKeyboard: [][]tb.InlineButton{{IBtnCreate}, {IBtnEditText}, {IBtnReText, IBtnReCat}},
+		InlineKeyboard: [][]tb.InlineButton{{IBtnCreate}, {IBtnEditText, IBtnAddText}, {IBtnReText, IBtnReCat}},
 	}
 )
 
