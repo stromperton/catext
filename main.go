@@ -204,8 +204,8 @@ func getText(text string) string {
 	} else {
 		final = p + " " + res["replies"][0][1:]
 	}
-	final = strings.Replace(final, "«", "", -1)
-	final = strings.Replace(final, "‎»", "", -1)
+	final = strings.ReplaceAll(final, "«", "")
+	final = strings.ReplaceAll(final, "‎»", "")
 	return final
 }
 
