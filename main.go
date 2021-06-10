@@ -26,6 +26,7 @@ var (
 
 	IBtnCreate   = tb.InlineButton{Text: "✔️ Опубликовать", Unique: "ok"}
 	IBtnEditText = tb.InlineButton{Text: "✏️ Редактировать текст", Unique: "editText"}
+	IBtnAddText  = tb.InlineButton{Text: "🔗 Дополнить текст", Unique: "addText"}
 	IBtnReText   = tb.InlineButton{Text: "🔄 Обновить текст", Unique: "reText"}
 	IBtnReCat    = tb.InlineButton{Text: "🔄 Обновить кота", Unique: "reCat"}
 	InlinePost   = &tb.ReplyMarkup{
@@ -78,7 +79,7 @@ func main() {
 			return
 		}
 		DownloadFile("cat.jpg", "https://thiscatdoesnotexist.com/")
-		text := getText()
+		text := getText("CITATA")
 		_, err := b.Send(m.Sender, &tb.Photo{
 			File:    tb.FromDisk("cat.jpg"),
 			Caption: text,
@@ -95,7 +96,7 @@ func main() {
 		createPostVK("cat.jpg", c.Message.Caption, SuperTimer)
 
 		DownloadFile("cat.jpg", "https://thiscatdoesnotexist.com/")
-		text := getText()
+		text := getText("CITATA")
 		_, err := b.Edit(c.Message, &tb.Photo{
 			File:    tb.FromDisk("cat.jpg"),
 			Caption: text,
@@ -106,7 +107,7 @@ func main() {
 	})
 	b.Handle(&IBtnReText, func(c *tb.Callback) {
 		b.Respond(c)
-		text := getText()
+		text := getText("CITATA")
 		b.Edit(c.Message, &tb.Photo{
 			File:    tb.FromDisk("cat.jpg"),
 			Caption: text,
@@ -124,6 +125,15 @@ func main() {
 		b.Respond(c)
 		b.Send(c.Sender, "Отправь новый текст")
 		IsBotStateEditText = true
+	})
+
+	b.Handle(&IBtnAddText, func(c *tb.Callback) {
+		b.Respond(c)
+		text := getText(c.Message.Caption)
+		b.Edit(c.Message, &tb.Photo{
+			File:    tb.FromDisk("cat.jpg"),
+			Caption: text,
+		}, InlinePost)
 	})
 
 	b.Handle(tb.OnText, func(m *tb.Message) {
@@ -152,18 +162,26 @@ func CreatePosts() {
 
 }
 */
-func getText() string {
+func getText(text string) string {
+	var p string
+	var l string
 
-	fileTextUrl := "https://socratify.net/quotes/random"
-	doc, err := htmlquery.LoadURL(fileTextUrl)
-	if err != nil {
-		fmt.Println(err)
+	if text != "CITATA" {
+		fileTextUrl := "https://socratify.net/quotes/random"
+		doc, err := htmlquery.LoadURL(fileTextUrl)
+		if err != nil {
+			fmt.Println(err)
+		}
+		p = htmlquery.FindOne(doc, "//h1[@class='b-quote__text']").FirstChild.Data
+		l = "30"
+	} else {
+		p = text
+		l = "10"
 	}
-	p := htmlquery.FindOne(doc, "//h1[@class='b-quote__text']")
 
 	reqBody, err := json.Marshal(map[string]string{
-		"lenght": "30",
-		"prompt": p.FirstChild.Data,
+		"lenght": l,
+		"prompt": p,
 	})
 
 	if err != nil {
