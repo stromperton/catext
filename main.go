@@ -9,6 +9,7 @@ import (
 	"net/url"
 	"os"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/antchfx/htmlquery"
@@ -196,11 +197,16 @@ func getText(text string) string {
 	var res map[string][]string
 	json.NewDecoder(resp.Body).Decode(&res)
 
+	var final string
+
 	if text == "CITATA" {
-		return res["replies"][0][1:]
+		final = res["replies"][0][1:]
 	} else {
-		return p + res["replies"][0][1:]
+		final = p + " " + res["replies"][0][1:]
 	}
+	final = strings.Replace(final, "«", "", -1)
+	final = strings.Replace(final, "‎»", "", -1)
+	return final
 }
 
 func getLastPostTimeVK() time.Time {
