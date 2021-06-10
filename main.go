@@ -195,7 +195,12 @@ func getText(text string) string {
 	}
 	var res map[string][]string
 	json.NewDecoder(resp.Body).Decode(&res)
-	return res["replies"][0][1:]
+
+	if text == "CITATA" {
+		return res["replies"][0][1:]
+	} else {
+		return p + res["replies"][0][1:]
+	}
 }
 
 func getLastPostTimeVK() time.Time {
