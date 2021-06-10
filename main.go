@@ -166,7 +166,7 @@ func getText(text string) string {
 	var p string
 	var l string
 
-	if text != "CITATA" {
+	if text == "CITATA" {
 		fileTextUrl := "https://socratify.net/quotes/random"
 		doc, err := htmlquery.LoadURL(fileTextUrl)
 		if err != nil {
